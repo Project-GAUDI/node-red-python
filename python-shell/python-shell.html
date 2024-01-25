@@ -1,0 +1,156 @@
+<script type="text/x-red" data-template-name="python-code">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> 名前</label>
+        <input type="text" id="node-input-name">
+    </div>
+    <div class="form-row" style="margin-bottom: 0px;">
+        <label for="node-input-python"><i class="fa fa-wrench"></i> コード</label>
+        <input type="hidden" id="node-input-python" autofocus="autofocus">
+    </div>
+    <div class="form-row node-text-editor-row">
+        <div style="height: 250px; min-height:150px;" class="node-text-editor" id="node-input-python-editor" ></div>
+    </div>
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType("python-code", {
+        category: "Python",
+        color: "#88abde",
+        defaults: {
+            name: { value: "" },
+            python: { value: "" },
+        },
+        inputs: 1,
+        outputs: 2,
+        icon: "python.png",
+        label: function () {
+            return this.name;
+        },
+        outputLabels: ["stdout","logs and stderr"],
+        oneditprepare: function () {
+            var that = this;
+            this.editor = RED.editor.createEditor({
+                id: "node-input-python-editor",
+                mode: "ace/mode/none",
+                value: $("#node-input-python").val(),
+            });
+            RED.library.create({
+                url: "functions",
+                type: "function",
+                editor: this.editor,
+                fields: ["name", "outputs"],
+            });
+            this.editor.focus();
+        },
+        oneditsave: function () {
+            var annot = this.editor.getSession().getAnnotations();
+            $("#node-input-python").val(this.editor.getValue());
+            this.editor.destroy();
+            delete this.editor;
+        },
+        oneditcancel: function () {
+            this.editor.destroy();
+            delete this.editor;
+        },
+        oneditresize: function (size) {
+            var rows = $("#dialog-form>div:not(.node-text-editor-row)");
+            var height = $("#dialog-form").height();
+            for (var i = 0; i < rows.size(); i++) {
+                height -= $(rows[i]).outerHeight(true);
+            }
+            var editorRow = $("#dialog-form>div.node-text-editor-row");
+            height -=
+                parseInt(editorRow.css("marginTop")) +
+                parseInt(editorRow.css("marginBottom"));
+            $(".node-text-editor").css("height", height + "px");
+            this.editor.resize();
+        },
+    });
+</script>
+
+<script type="text/x-red" data-help-name="python-code">
+    <p>ノードに入力したPytonコードを実行します。</p>
+    
+    <h3>入力</h3>
+        <dl class="message-properties">
+            <dt>payload<span class="property-type">文字列</span></dt>
+            <dd>Python実行時の引数</dd>
+        </dl>
+    
+    <h3>出力</h3>
+        <ol class="node-ports">
+            <li>stdout
+                <dl class="message-properties">
+                    <dt>payload<span class="property-type">配列</span></dt>
+                    <dd>Pythonからの標準出力</dd>
+                </dl>
+            </li>
+            <li>logs and stderr
+                <dl class="message-properties">
+                    <dt>payload<span class="property-type">配列</span></dt>
+                    <dd>Pythonからのログおよび標準エラー出力</dd>
+                </dl>
+            </li>
+        </ol>
+    
+    <h3>詳細</h3>
+        <p>Pythonの実行エラー発生時は、catchノードへエラーを送信します。</p>
+</script>
+
+<script type="text/x-red" data-template-name="python-file">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> 名前</label>
+        <input type="text" id="node-input-name">
+    </div>
+    <div class="form-row" style="margin-bottom: 0px;">
+        <label for="node-input-python"><i class="fa fa-wrench"></i> ファイル</label>
+        <input type="text" id="node-input-python">
+    </div>
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType("python-file", {
+        category: "Python",
+        color: "#88abde",
+        defaults: {
+            name: { value: "" },
+            python: { value: "" },
+        },
+        inputs: 1,
+        outputs: 2,
+        icon: "python.png",
+        label: function () {
+            return this.name;
+        },
+        outputLabels: ["stdout","logs and stderr"],
+    });
+</script>
+
+<script type="text/x-red" data-help-name="python-file">
+    <p>Pythonファイルを実行します。</p>
+    
+    <h3>入力</h3>
+        <dl class="message-properties">
+            <dt>payload<span class="property-type">文字列</span></dt>
+            <dd>Python実行時の引数</dd>
+        </dl>
+    
+    <h3>出力</h3>
+        <ol class="node-ports">
+            <li>stdout
+                <dl class="message-properties">
+                    <dt>payload<span class="property-type">配列</span></dt>
+                    <dd>Pythonからの標準出力</dd>
+                </dl>
+            </li>
+            <li>logs and stderr
+                <dl class="message-properties">
+                    <dt>payload<span class="property-type">配列</span></dt>
+                    <dd>Pythonからのログおよび標準エラー出力</dd>
+                </dl>
+            </li>
+        </ol>
+    
+    <h3>詳細</h3>
+        <p>Pythonの実行エラー発生時は、catchノードへエラーを送信します。</p>
+</script>

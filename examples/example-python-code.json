@@ -1,0 +1,112 @@
+[
+    {
+        "id": "187282aa.819ced",
+        "type": "inject",
+        "z": "f6f2187d.f17ca8",
+        "name": "実行トリガー",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"data1\":\"aaa\",\"data2\":\"bbb\"}",
+        "payloadType": "str",
+        "x": 130,
+        "y": 200,
+        "wires": [
+            [
+                "78b43b94.21e2d4"
+            ]
+        ]
+    },
+    {
+        "id": "c18b0d9a.699a4",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "name": "標準出力",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 560,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "92196898.2efd68",
+        "type": "catch",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "scope": [
+            "78b43b94.21e2d4"
+        ],
+        "uncaught": false,
+        "x": 110,
+        "y": 280,
+        "wires": [
+            [
+                "4352c022.3dc6c"
+            ]
+        ]
+    },
+    {
+        "id": "4352c022.3dc6c",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "name": "エラー出力",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "error",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 350,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "68ea5f73.da548",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "name": "ログ・標準エラー出力",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 600,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "78b43b94.21e2d4",
+        "type": "python-code",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "python": "import sys\nimport json\nimport logging\n\n# stdout\nargs = sys.argv\njson_data = json.loads(args[1])\nprint(json_data['data1'])\nprint(json_data['data2'])\n\n# logs and stderr\nlogging.warning('warning')\nprint('error', file=sys.stderr)",
+        "x": 350,
+        "y": 200,
+        "wires": [
+            [
+                "c18b0d9a.699a4"
+            ],
+            [
+                "68ea5f73.da548"
+            ]
+        ]
+    }
+]

@@ -1,0 +1,112 @@
+[
+    {
+        "id": "1392642c.1c9aac",
+        "type": "python-file",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "python": "/data/test.py",
+        "x": 350,
+        "y": 300,
+        "wires": [
+            [
+                "c7267ad4.8a55f8"
+            ],
+            [
+                "33ef0d35.92c782"
+            ]
+        ]
+    },
+    {
+        "id": "1ce2418f.85207e",
+        "type": "inject",
+        "z": "f6f2187d.f17ca8",
+        "name": "実行トリガー",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 130,
+        "y": 300,
+        "wires": [
+            [
+                "1392642c.1c9aac"
+            ]
+        ]
+    },
+    {
+        "id": "c7267ad4.8a55f8",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "name": "標準出力",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 560,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "bea044cb.098438",
+        "type": "catch",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "scope": [
+            "1392642c.1c9aac"
+        ],
+        "uncaught": false,
+        "x": 110,
+        "y": 380,
+        "wires": [
+            [
+                "35f95a99.c8b776"
+            ]
+        ]
+    },
+    {
+        "id": "35f95a99.c8b776",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "name": "エラー出力",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "error",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 350,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "33ef0d35.92c782",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "name": "ログ・標準エラー出力",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 600,
+        "y": 320,
+        "wires": []
+    }
+]
