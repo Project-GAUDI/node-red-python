@@ -1,9 +1,12 @@
 {
     "name": "@project-gaudi/node-red-python",
     "version": "1.0.0",
-    "description": "",
-    "author": "",
-    "license": "ISC",
+    "description": "Node-RED-Python",
+    "author": "Toyota Industries Corporation",
+    "publishConfig": {
+        "registry": "https://npm.pkg.github.com/Project-GAUDI/"
+    },
+    "license": "MIT",
     "keywords": [
         "node-red"
     ],
@@ -14,5 +17,9 @@
     },
     "dependencies": {
         "python-shell": "^2.0.3"
-    }
+    },
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Project-GAUDI/node-red-python.git"
+	}   
 }
