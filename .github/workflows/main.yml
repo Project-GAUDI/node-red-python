@@ -1,25 +1,27 @@
-name: Publish Node.js Package
+name: Build Node.js Package
 
 on:
-  release:
-    types: [published]
+  push:
+    branches:
+      - main
+      - develop
 
 jobs:
-  publish:
+  setup-and-install:
     runs-on: ubuntu-22.04
     steps:
     - uses: actions/checkout@v4
       with:
         fetch-depth: 0
-       
+
     - name: Grant execute permission to edit_packageJSON.sh
       run: chmod +x ./tools/edit_packageJSON.sh
-  
+
     - name: Edit package.json for gaudi-iot-device
       run: ./tools/edit_packageJSON.sh
       env: 
-        VERSION: ${{ github.event.release.tag_name }}
-    
+        VERSION: 0.0.1-test
+
     - name: Set Node.js version
       uses: actions/setup-node@v4
       with:
@@ -33,9 +35,3 @@ jobs:
       run: npm install
       env:
         NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Publish to GitHub Packages
-      run: npm publish
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        

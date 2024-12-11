@@ -11,10 +11,8 @@ node-red-pythonは、下記処理を行うNode-REDのカスタムノードです
 
 &emsp;・Pythonファイルの実行
 
-## Quick Start
-
 ## Feedback
 お気づきの点があれば、ぜひIssueにてお知らせください。
 
 ## LICENSE
-This project is licensed under the MIT License, see the LICENSE file for details.
+node-red-python is licensed under the MIT License, see the [LICENSE](LICENSE) file for details.
