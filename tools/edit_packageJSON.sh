@@ -6,7 +6,6 @@ target="package.json"
 author="Toyota Industries Corporation"
 lisence="MIT"
 version=${VERSION}
-version='6.0.1'
 url="https://github.com/Project-GAUDI/node-red-python"
 
 sed -i 's/\"name\": \".*\",/\"name\": \"'"${name}"'\",/g' "${target}"
