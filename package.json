@@ -1,6 +1,6 @@
 {
     "name": "node-red-python",
-    "version": "1.0.0",
+    "version": "7.0.1",
     "description": "",
     "author": "",
     "license": "ISC",
@@ -13,6 +13,6 @@
         }
     },
     "dependencies": {
-        "python-shell": "^2.0.3"
+        "python-shell": "^5.0.0"
     }
 }

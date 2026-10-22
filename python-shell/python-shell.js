@@ -34,8 +34,10 @@ module.exports = function (RED) {
             pythonOptions: ["-u"],
             args: [msg.payload],
         };
-        
+
         let filePath;
+        let shell;
+
         try{
             if (file) {
                 filePath = node.python;
@@ -45,14 +47,26 @@ module.exports = function (RED) {
             }
         } catch (err) {
             node.error(err, msg);
+            node.log(`${node.type}.executePython Error: ${err.message}`);
+            return;
         }
 
-        const shell = new PythonShell(filePath, options);
+        try{
+            shell = new PythonShell(filePath, options);
+        } catch (err) {
+            node.error(err, msg);
+            node.log(`${node.type}.executePython Error: ${err.message}`);
+            return;
+        }
+
         let output = [];
         let logs = [];
+        let stdoutBuffer = "";
 
-        shell.on("message", function (message) {
-            output.push(message);
+        shell.stdout.on("data", function (chunk) {
+            const lines = (stdoutBuffer + chunk).split(/\r?\n/);
+            stdoutBuffer = lines.pop();
+            output.push(...lines);
         });
 
         shell.on("stderr", function (stderr) {
@@ -60,9 +74,13 @@ module.exports = function (RED) {
         });
 
         shell.end(function (err, code, signal) {
+            if (stdoutBuffer !== "") {
+                output.push(stdoutBuffer);
+            }
+
             if (code != 0) {
-                node.log(JSON.stringify(err));
                 node.error(err, msg);
+                node.log(`${node.type}.executePython Error: ${err.message}`);
             } else {
                 let msg1 = {
                     _msgid : msg._msgid,
@@ -73,7 +91,7 @@ module.exports = function (RED) {
                     payload : logs
                 }
                 node.log("send stdout:"+JSON.stringify(msg1));
-                node.log("send logs and stderr:"+JSON.stringify(msg2));
+                node.log("send stderr:"+JSON.stringify(msg2));
                 node.send([msg1, msg2]);
             }
 
