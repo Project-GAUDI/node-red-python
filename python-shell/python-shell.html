@@ -5,7 +5,7 @@
     </div>
     <div class="form-row" style="margin-bottom: 0px;">
         <label for="node-input-python"><i class="fa fa-wrench"></i> コード</label>
-        <input type="hidden" id="node-input-python" autofocus="autofocus">
+        <input type="hidden" id="node-input-python">
     </div>
     <div class="form-row node-text-editor-row">
         <div style="height: 250px; min-height:150px;" class="node-text-editor" id="node-input-python-editor" ></div>
@@ -18,7 +18,7 @@
         color: "#88abde",
         defaults: {
             name: { value: "" },
-            python: { value: "" },
+            python: { value: "", label: "コード", required: true },
         },
         inputs: 1,
         outputs: 2,
@@ -26,13 +26,14 @@
         label: function () {
             return this.name;
         },
-        outputLabels: ["stdout","logs and stderr"],
+        outputLabels: ["stdout","stderr"],
         oneditprepare: function () {
             var that = this;
             this.editor = RED.editor.createEditor({
                 id: "node-input-python-editor",
-                mode: "ace/mode/none",
+                mode: "ace/mode/python",
                 value: $("#node-input-python").val(),
+                focus: true,
             });
             RED.library.create({
                 url: "functions",
@@ -40,7 +41,6 @@
                 editor: this.editor,
                 fields: ["name", "outputs"],
             });
-            this.editor.focus();
         },
         oneditsave: function () {
             var annot = this.editor.getSession().getAnnotations();
@@ -69,7 +69,7 @@
 </script>
 
 <script type="text/x-red" data-help-name="python-code">
-    <p>ノードに入力したPytonコードを実行します。</p>
+    <p>ノードに入力したPythonコードを実行します。</p>
     
     <h3>入力</h3>
         <dl class="message-properties">
@@ -85,16 +85,25 @@
                     <dd>Pythonからの標準出力</dd>
                 </dl>
             </li>
-            <li>logs and stderr
+            <li>stderr
                 <dl class="message-properties">
                     <dt>payload<span class="property-type">配列</span></dt>
-                    <dd>Pythonからのログおよび標準エラー出力</dd>
+                    <dd>Pythonからの標準エラー出力</dd>
                 </dl>
             </li>
         </ol>
     
-    <h3>詳細</h3>
-        <p>Pythonの実行エラー発生時は、catchノードへエラーを送信します。</p>
+    <h3>例外</h3>
+        <p>
+            下記の場合、例外を出力します<br>
+            <ul>
+                <li>Python3が存在しない※
+                <li>Pythonコード構文エラー
+                <li>Python実行時エラー
+            </ul>
+            出力された例外は、catchノードで取得可能です。<br>
+            ※エラー発生後、モジュールが再起動します。
+        </p>
 </script>
 
 <script type="text/x-red" data-template-name="python-file">
@@ -114,7 +123,7 @@
         color: "#88abde",
         defaults: {
             name: { value: "" },
-            python: { value: "" },
+            python: { value: "", label: "ファイル", required: true },
         },
         inputs: 1,
         outputs: 2,
@@ -122,7 +131,7 @@
         label: function () {
             return this.name;
         },
-        outputLabels: ["stdout","logs and stderr"],
+        outputLabels: ["stdout","stderr"],
     });
 </script>
 
@@ -143,14 +152,24 @@
                     <dd>Pythonからの標準出力</dd>
                 </dl>
             </li>
-            <li>logs and stderr
+            <li>stderr
                 <dl class="message-properties">
                     <dt>payload<span class="property-type">配列</span></dt>
-                    <dd>Pythonからのログおよび標準エラー出力</dd>
+                    <dd>Pythonからの標準エラー出力</dd>
                 </dl>
             </li>
         </ol>
-    
-    <h3>詳細</h3>
-        <p>Pythonの実行エラー発生時は、catchノードへエラーを送信します。</p>
+
+    <h3>例外</h3>
+        <p>
+            下記の場合、例外を出力します<br>
+            <ul>
+                <li>Python3が存在しない※
+                <li>ファイルパスが未設定または不正
+                <li>Pythonコード構文エラー
+                <li>Python実行時エラー
+            </ul>
+            出力された例外は、catchノードで取得可能です。<br>
+            ※エラー発生後、モジュールが再起動します。
+        </p>
 </script>

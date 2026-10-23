@@ -5,7 +5,8 @@ description="Node-RED-Python"
 target="package.json"
 author="Toyota Industries Corporation"
 lisence="MIT"
-version=${VERSION}
+#version=${VERSION}
+version='7.0.1'
 url="https://github.com/Project-GAUDI/node-red-python"
 
 sed -i 's/\"name\": \".*\",/\"name\": \"'"${name}"'\",/g' "${target}"
@@ -16,17 +17,17 @@ sed -i 's|"license": ".*"|"license": "'"${lisence}"'"|g' "${target}"
 
 grep -q '"repository"' "${target}" || \
 sed -i '/"node-red": {/i \
-    "repository": { \
-        "type": "git",\
-        "url": "git+'"${url}"'" \
-    },' "${target}"
+  "repository": { \
+    "type": "git",\
+    "url": "git+https://github.com/Project-GAUDI/node-red-python" \
+  },' "${target}"
 
 grep -q '"bugs"' "${target}" || \
 sed -i '/"node-red": {/i \
-    "bugs": { \
-        "url": "'"${url}"'/issues" \
-    },' "${target}"
+  "bugs": { \
+    "url": "https://github.com/Project-GAUDI/node-red-python/issues" \
+  },' "${target}"
 
 grep -q '"homepage"' "${target}" || \
 sed -i '/"node-red": {/i \
-    "homepage": "'"${url}"'#readme",' "${target}"
+  "homepage": "https://github.com/Project-GAUDI/node-red-python#readme",' "${target}"
