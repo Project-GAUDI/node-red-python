@@ -19,15 +19,15 @@ grep -q '"repository"' "${target}" || \
 sed -i '/"node-red": {/i \
   "repository": { \
     "type": "git",\
-    "url": "git+https://github.com/Project-GAUDI/node-red-blobstorage" \
+    "url": "git+https://github.com/Project-GAUDI/node-red-python" \
   },' "${target}"
 
 grep -q '"bugs"' "${target}" || \
 sed -i '/"node-red": {/i \
   "bugs": { \
-    "url": "https://github.com/Project-GAUDI/node-red-blobstorage/issues" \
+    "url": "https://github.com/Project-GAUDI/node-red-python/issues" \
   },' "${target}"
 
 grep -q '"homepage"' "${target}" || \
 sed -i '/"node-red": {/i \
-  "homepage": "https://github.com/Project-GAUDI/node-red-blobstorage#readme",' "${target}"
+  "homepage": "https://github.com/Project-GAUDI/node-red-python#readme",' "${target}"
